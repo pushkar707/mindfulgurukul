@@ -21,7 +21,7 @@ app.use(cors({
     origin:"http://localhost:19006"
 }))
 
-app.post("/login",async(req:Request,res:Response) => {    
+app.post("/signup",async(req:Request,res:Response) => {    
     try{        
         const {password} = req.body
         const hashedPassword = await bcrypt.hash(password,10)
@@ -30,6 +30,19 @@ app.post("/login",async(req:Request,res:Response) => {
     }catch(e:any){
         return res.json({success:false,message:e.message})
     }
+})
+
+app.post("/login",async(req:Request,res:Response) => {
+    const {email,password} = req.body
+    const user = await User.findOne({email})
+    if(!user) 
+        return res.json({error:true,message:"Invalid Credentials"})
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password)
+    console.log(isPasswordCorrect);    
+    if(isPasswordCorrect)
+        return res.json({success:true,message:"User verified"})
+    return res.json({error:true,message:"Invalid Credentials"})
 })
 
 app.listen(3000,() => {
