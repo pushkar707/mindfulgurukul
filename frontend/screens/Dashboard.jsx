@@ -63,7 +63,7 @@ const Dashboard = ({navigation}) => {
 
       <View style={{marginTop:56}} >
       {subUsersArray.reverse().map(user => {
-        return <UserCard key={user._id} {...user} setsubUsersArray={setsubUsersArray} seteditUserDetails={seteditUserDetails} toggleModal={toggleModal} /> 
+        return <UserCard key={user._id} {...user} setsubUsersArray={setsubUsersArray} seteditUserDetails={seteditUserDetails} toggleModal={toggleModal} navigation={navigation} /> 
       })}
       </View>
 

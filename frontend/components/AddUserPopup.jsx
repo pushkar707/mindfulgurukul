@@ -9,16 +9,25 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const AddUserPopup = ({ toggleModal, isModalVisible, setsubUsersArray, usernameVal, emailVal, phoneVal,editUserId, seteditUserDetails}) => {
+const AddUserPopup = ({
+  toggleModal,
+  isModalVisible,
+  setsubUsersArray,
+  usernameVal,
+  emailVal,
+  phoneVal,
+  editUserId,
+  seteditUserDetails,
+}) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-
+  
   useEffect(() => {
-    setUsername(usernameVal)
-    setEmail(emailVal)
-    setPhone(phoneVal)
-  },[])
+    setUsername(usernameVal);
+    setEmail(emailVal);
+    setPhone(phoneVal);
+  }, [usernameVal,emailVal,phoneVal]);
 
   const addSubUser = async () => {
     const accessToken = await AsyncStorage.getItem("accessToken");
@@ -28,32 +37,61 @@ const AddUserPopup = ({ toggleModal, isModalVisible, setsubUsersArray, usernameV
     if (!username.length || !email.length || !phone.length) return;
 
     const res = await fetch("http://localhost:3000/subuser/add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                username,
-                email,
-                phone,
-                accessToken,
-            }),
-        });
-        const data = await res.json()        
-        if(data.success){
-            setUsername("")
-            setEmail("")
-            setPhone("")
-            toggleModal()
-            setsubUsersArray(prevUsers => {
-              return [...prevUsers, {username, email, phone}]
-            })
-        }
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        email,
+        phone,
+        accessToken,
+      }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      setUsername("");
+      setEmail("");
+      setPhone("");
+      toggleModal();
+      setsubUsersArray((prevUsers) => {
+        return [...prevUsers, { username, email, phone }];
+      });
+    }
   };
 
-  const updateUser = async() => {
-    console.log("Update user popup");
-  }
+  const updateUser = async () => {
+    if (!username.length || !email.length || !phone.length) return;
+
+    const res = await fetch("http://localhost:3000/subuser/edit", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        editUserId,
+        username,
+        email,
+        phone,
+      }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      setUsername("");
+      setEmail("");
+      setPhone("");
+      toggleModal();
+      setsubUsersArray((prevUsers) => {
+        const newUsers = prevUsers.map(user => {
+          if(user._id === editUserId){
+            return {...user, username, email, phone}
+          }
+          return user
+        })
+        return newUsers
+      });
+    }
+  };
   return (
     <Modal
       animationType="slide"
@@ -98,7 +136,9 @@ const AddUserPopup = ({ toggleModal, isModalVisible, setsubUsersArray, usernameV
 
           <View style={{ flexDirection: "row", gap: 8 }}>
             <Pressable
-              onPress={editUserId.length ? () => updateUser(editUserId) : addSubUser}
+              onPress={
+                editUserId.length ? updateUser : addSubUser
+              }
               style={{
                 paddingVertical: 8,
                 backgroundColor: "skyblue",
@@ -112,7 +152,19 @@ const AddUserPopup = ({ toggleModal, isModalVisible, setsubUsersArray, usernameV
             </Pressable>
 
             <Pressable
-              onPress={!editUserId.length ? toggleModal : () => {seteditUserDetails({usernameVal:"",emailVal:"",editUserId:"",phoneVal:""}); toggleModal();}}
+              onPress={
+                !editUserId.length
+                  ? toggleModal
+                  : () => {
+                      seteditUserDetails({
+                        usernameVal: "",
+                        emailVal: "",
+                        editUserId: "",
+                        phoneVal: "",
+                      });
+                      toggleModal();
+                    }
+              }
               style={{
                 paddingVertical: 8,
                 backgroundColor: "black",

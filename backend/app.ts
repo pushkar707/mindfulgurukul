@@ -97,7 +97,7 @@ app.post("/subuser/delete",async(req:Request, res:Response) => {
     const {accessToken,id} = req.body
     if(process.env.JWT_SECRET_KEY){
         const userId = JWT.verify(accessToken, process.env.JWT_SECRET_KEY)
-        
+
         const user = await User.findByIdAndUpdate(userId,{$pull:{subUsers:id}})
         if(!user)
             return res.json({error:true,message:"User not found"})
@@ -107,6 +107,13 @@ app.post("/subuser/delete",async(req:Request, res:Response) => {
     }else{
         throw new Error("JWT Secret not found")
     }
+})
+
+app.put("/subuser/edit",async(req:Request, res:Response) => {
+    const {editUserId,username,email,phone} = req.body
+    const user = await SubUser.findByIdAndUpdate(editUserId,{username,email,phone})
+    if(!user) return res.json({error:true,message:"User not found"})
+    return res.json({success:true,message:"User edited successfully"})
 })
 
 app.listen(3000,() => {
