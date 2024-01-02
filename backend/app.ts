@@ -93,6 +93,22 @@ app.post("/subuser/all",async(req:Request,res:Response) => {
     }
 })
 
+app.post("/subuser/delete",async(req:Request, res:Response) => {
+    const {accessToken,id} = req.body
+    if(process.env.JWT_SECRET_KEY){
+        const userId = JWT.verify(accessToken, process.env.JWT_SECRET_KEY)
+        
+        const user = await User.findByIdAndUpdate(userId,{$pull:{subUsers:id}})
+        if(!user)
+            return res.json({error:true,message:"User not found"})
+
+        await SubUser.findByIdAndDelete(id)
+        return res.json({success:true,})
+    }else{
+        throw new Error("JWT Secret not found")
+    }
+})
+
 app.listen(3000,() => {
     console.log("Listening on port 3000");
     

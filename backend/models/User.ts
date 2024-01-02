@@ -37,10 +37,10 @@ const userSchema = new Schema({
         type: String,
         required:true,
     },
-    subUsers:{
+    subUsers:[{
         type: Schema.Types.ObjectId,
         ref:"SubUser"
-    }
+    }]
 })
 
 const User = model("User",userSchema)

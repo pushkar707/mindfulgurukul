@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   View,
@@ -9,10 +9,16 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const AddUserPopup = ({ toggleModal, isModalVisible }) => {
+const AddUserPopup = ({ toggleModal, isModalVisible, setsubUsersArray, usernameVal, emailVal, phoneVal,editUserId, seteditUserDetails}) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+
+  useEffect(() => {
+    setUsername(usernameVal)
+    setEmail(emailVal)
+    setPhone(phoneVal)
+  },[])
 
   const addSubUser = async () => {
     const accessToken = await AsyncStorage.getItem("accessToken");
@@ -39,9 +45,15 @@ const AddUserPopup = ({ toggleModal, isModalVisible }) => {
             setEmail("")
             setPhone("")
             toggleModal()
+            setsubUsersArray(prevUsers => {
+              return [...prevUsers, {username, email, phone}]
+            })
         }
-    };
+  };
 
+  const updateUser = async() => {
+    console.log("Update user popup");
+  }
   return (
     <Modal
       animationType="slide"
@@ -86,7 +98,7 @@ const AddUserPopup = ({ toggleModal, isModalVisible }) => {
 
           <View style={{ flexDirection: "row", gap: 8 }}>
             <Pressable
-              onPress={addSubUser}
+              onPress={editUserId.length ? () => updateUser(editUserId) : addSubUser}
               style={{
                 paddingVertical: 8,
                 backgroundColor: "skyblue",
@@ -100,7 +112,7 @@ const AddUserPopup = ({ toggleModal, isModalVisible }) => {
             </Pressable>
 
             <Pressable
-              onPress={toggleModal}
+              onPress={!editUserId.length ? toggleModal : () => {seteditUserDetails({usernameVal:"",emailVal:"",editUserId:"",phoneVal:""}); toggleModal();}}
               style={{
                 paddingVertical: 8,
                 backgroundColor: "black",
