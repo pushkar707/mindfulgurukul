@@ -3,6 +3,7 @@ import { Pressable, View, Text, StyleSheet, Image, Modal } from "react-native";
 import AddUserPopup from "../components/AddUserPopup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import UserCard from "../components/UserCard";
+import SearchBar from "../components/SearchBar";
 
 const Dashboard = ({ navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -11,6 +12,8 @@ const Dashboard = ({ navigation }) => {
   };
 
   const [subUsersArray, setsubUsersArray] = useState([]);
+  const [searchResults, setSearchResults] = useState([])
+  const [searchTerm, setSearchTerm] = useState('');
   const [editUserDetails, seteditUserDetails] = useState({
     usernameVal: "",
     emailVal: "",
@@ -125,6 +128,8 @@ const Dashboard = ({ navigation }) => {
         </Text>
       </View>
 
+      <SearchBar setSearchResults={setSearchResults} subUsersArray={subUsersArray} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
       <AddUserPopup
         toggleModal={toggleModal}
         isModalVisible={isModalVisible}
@@ -134,7 +139,7 @@ const Dashboard = ({ navigation }) => {
       />
 
       <View>
-        {subUsersArray.length ? subUsersArray.map((user) => {
+        {subUsersArray.length ? (searchTerm.length ? searchResults : subUsersArray).map((user) => {
           return (
             <UserCard
               key={user._id}
@@ -146,6 +151,7 @@ const Dashboard = ({ navigation }) => {
             />
           );
         }) : <Text style={{textAlign:"center", fontSize:18, marginTop: 16}} >No Data Found</Text>}
+        {(searchTerm.length && !searchResults.length) ? <Text style={{textAlign:"center", fontSize:18, marginTop: 16}} >No Data Found</Text> : ""}
       </View>
     </View>
   );
