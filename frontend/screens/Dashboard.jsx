@@ -134,7 +134,7 @@ const Dashboard = ({ navigation }) => {
       />
 
       <View>
-        {subUsersArray.map((user) => {
+        {subUsersArray.length ? subUsersArray.map((user) => {
           return (
             <UserCard
               key={user._id}
@@ -145,7 +145,7 @@ const Dashboard = ({ navigation }) => {
               navigation={navigation}
             />
           );
-        })}
+        }) : <Text style={{textAlign:"center", fontSize:18, marginTop: 16}} >No Data Found</Text>}
       </View>
     </View>
   );
