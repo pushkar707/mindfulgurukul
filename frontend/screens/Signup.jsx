@@ -13,7 +13,7 @@ import {
 import { RadioButton, Checkbox } from "react-native-paper";
 import SelectDropdown from "react-native-select-dropdown";
 
-const Signup = () => {
+const Signup = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");

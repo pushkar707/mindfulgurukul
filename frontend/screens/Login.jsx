@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Text, TextInput, Pressable, Platform } from "react-native";
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,10 +20,10 @@ const Login = () => {
         }),
         });
         const data = await res.json();
-        navigation.navigate('Dashboard')
     } catch (e) {
         console.log(e);
     }
+    navigation.navigate('Dashboard')
   }
 
   return (
