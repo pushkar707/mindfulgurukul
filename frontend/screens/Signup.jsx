@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { RadioButton, Checkbox } from "react-native-paper";
 import SelectDropdown from "react-native-select-dropdown";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Signup = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -88,7 +89,10 @@ const Signup = ({ navigation }) => {
         }),
       });
       const data = await res.json();
-      navigation.navigate('Dashboard')
+      if(data.success){
+        await AsyncStorage.setItem('accessToken', data.accessToken);
+        navigation.navigate('Dashboard')
+      }
     } catch (e) {
       console.log(e);
     }

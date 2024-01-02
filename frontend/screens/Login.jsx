@@ -1,5 +1,6 @@
 import React,{useState} from "react";
 import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Text, TextInput, Pressable, Platform } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -20,10 +21,13 @@ const Login = ({ navigation }) => {
         }),
         });
         const data = await res.json();
+        if(data.success){
+          await AsyncStorage.setItem('accessToken', data.accessToken);
+          navigation.navigate('Dashboard')
+        }
     } catch (e) {
         console.log(e);
     }
-    navigation.navigate('Dashboard')
   }
 
   return (

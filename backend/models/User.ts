@@ -36,6 +36,10 @@ const userSchema = new Schema({
     state: {
         type: String,
         required:true,
+    },
+    subUsers:{
+        type: Schema.Types.ObjectId,
+        ref:"SubUser"
     }
 })
 

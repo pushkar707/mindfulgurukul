@@ -1,14 +1,25 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import { Pressable, View, Text, StyleSheet, Image, Modal } from "react-native";
 import Svg, { Path } from 'react-native-svg';
 import AddUserPopup from "../components/AddUserPopup";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Dashboard = () => {
+const Dashboard = ({navigation}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(prevState => !prevState);
   };
-  
+
+  useEffect(() => {
+    const checkLoggedInUser = async() => {
+      const accessToken = await AsyncStorage.getItem('accessToken');
+      if(!accessToken){
+        navigation.navigate('Login')
+      }
+    }
+    checkLoggedInUser()
+  },[])
+
   return (
     <View>
       <Pressable
