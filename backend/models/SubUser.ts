@@ -13,6 +13,8 @@ const subUserSchema = new Schema({
         type:String,
         required:true,
     }
+}, {
+    timestamps: true, // Automatically add createdAt and updatedAt fields
 })
 
 const SubUser = model("SubUser",subUserSchema)

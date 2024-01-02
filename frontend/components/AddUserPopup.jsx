@@ -55,7 +55,7 @@ const AddUserPopup = ({
       setPhone("");
       toggleModal();
       setsubUsersArray((prevUsers) => {
-        return [...prevUsers, { username, email, phone }];
+        return [...prevUsers, data.subUser];
       });
     }
   };
@@ -84,7 +84,7 @@ const AddUserPopup = ({
       setsubUsersArray((prevUsers) => {
         const newUsers = prevUsers.map(user => {
           if(user._id === editUserId){
-            return {...user, username, email, phone}
+            return data.subUser
           }
           return user
         })
@@ -137,7 +137,7 @@ const AddUserPopup = ({
           <View style={{ flexDirection: "row", gap: 8 }}>
             <Pressable
               onPress={
-                editUserId.length ? updateUser : addSubUser
+                editUserId && editUserId.length ? updateUser : addSubUser
               }
               style={{
                 paddingVertical: 8,

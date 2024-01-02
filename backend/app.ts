@@ -71,7 +71,7 @@ app.post("/subuser/add",async(req:Request,res:Response)=> {
             const user = await User.findByIdAndUpdate(userId,{$push:{subUsers:subUser.id}})
             if(!user)
                 return res.json({error:true,message:"User not verified"})
-            return res.json({success:true,message:"Subuser added"})      
+            return res.json({success:true,message:"Subuser added",subUser})
         }else{
             throw new Error("JWT Secret not found")
         }
@@ -111,9 +111,9 @@ app.post("/subuser/delete",async(req:Request, res:Response) => {
 
 app.put("/subuser/edit",async(req:Request, res:Response) => {
     const {editUserId,username,email,phone} = req.body
-    const user = await SubUser.findByIdAndUpdate(editUserId,{username,email,phone})
-    if(!user) return res.json({error:true,message:"User not found"})
-    return res.json({success:true,message:"User edited successfully"})
+    const subUser = await SubUser.findByIdAndUpdate(editUserId,{username,email,phone}, { new: true })
+    if(!subUser) return res.json({error:true,message:"User not found"})
+    return res.json({success:true,message:"User edited successfully",subUser})
 })
 
 app.listen(3000,() => {
