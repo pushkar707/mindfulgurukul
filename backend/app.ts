@@ -9,7 +9,7 @@ import SubUser from "./models/SubUser";
 
 const app = express()
 
-mongoose.connect('mongodb://127.0.0.1:27017/mindfulgurukul')
+mongoose.connect(process.env.MONGODB_URI || "")
 .then(() =>{
     console.log("Connected to database");
 })
@@ -23,6 +23,10 @@ app.use(express.json())
 app.use(cors({
     origin:"http://localhost:19006"
 }))
+
+app.get("/test",(req:Request,res:Response) => {
+    res.send("working")
+})
 
 app.post("/signup",async(req:Request,res:Response) => {    
     try{        

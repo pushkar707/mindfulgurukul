@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Pressable, View, Text, StyleSheet, Image, Modal } from "react-native";
+import { Pressable, View, Text, StyleSheet, Image, Modal, ScrollView } from "react-native";
 import AddUserPopup from "../components/AddUserPopup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import UserCard from "../components/UserCard";
@@ -37,7 +37,7 @@ const Dashboard = ({ navigation }) => {
 
   const getSubUsers = async () => {
     const accessToken = await getAccessToken();
-    const res = await fetch("http://localhost:3000/subuser/all", {
+    const res = await fetch("http://192.168.0.104:3000/subuser/all", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -75,7 +75,7 @@ const Dashboard = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <ScrollView keyboardShouldPersistTaps="handled" >
       <Pressable
         onPress={toggleModal}
         style={{
@@ -153,7 +153,7 @@ const Dashboard = ({ navigation }) => {
         }) : <Text style={{textAlign:"center", fontSize:18, marginTop: 16}} >No Data Found</Text>}
         {(searchTerm.length && !searchResults.length) ? <Text style={{textAlign:"center", fontSize:18, marginTop: 16}} >No Data Found</Text> : ""}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

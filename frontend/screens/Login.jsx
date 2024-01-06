@@ -10,7 +10,7 @@ const Login = ({ navigation }) => {
     if(!email.length || !password.length)
         return
     try {
-        const res = await fetch("http://localhost:3000/login", {
+        const res = await fetch("http://192.168.0.104:3000/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

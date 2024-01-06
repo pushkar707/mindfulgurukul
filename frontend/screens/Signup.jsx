@@ -72,7 +72,7 @@ const Signup = ({ navigation }) => {
     if (password !== cpassword) return;
 
     try {
-      const res = await fetch("http://localhost:3000/signup", {
+      const res = await fetch("http://192.168.0.104:3000/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

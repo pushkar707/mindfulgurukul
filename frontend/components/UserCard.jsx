@@ -14,9 +14,9 @@ const UserCard = ({_id,username,email,phone, setsubUsersArray, seteditUserDetail
     }
 
     const deleteUser = async (id) => {
-        if(window.confirm("Are you sure you want to delete the user?")){
+        // if(window.confirm("Are you sure you want to delete the user?")){
             const accessToken = await getAccessToken()
-            const res = await fetch("http://localhost:3000/subuser/delete", {
+            const res = await fetch("http://192.168.0.104:3000/subuser/delete", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -34,7 +34,7 @@ const UserCard = ({_id,username,email,phone, setsubUsersArray, seteditUserDetail
                     return previousUsers
                 })
             }
-        }
+        // }
     }
 
     const updateUser = async (id,username,email,phone) => {

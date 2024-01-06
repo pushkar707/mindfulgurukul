@@ -36,7 +36,7 @@ const AddUserPopup = ({
     }
     if (!username.length || !email.length || !phone.length) return;
 
-    const res = await fetch("http://localhost:3000/subuser/add", {
+    const res = await fetch("http://192.168.0.104:3000/subuser/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const AddUserPopup = ({
   const updateUser = async () => {
     if (!username.length || !email.length || !phone.length) return;
 
-    const res = await fetch("http://localhost:3000/subuser/edit", {
+    const res = await fetch("http://192.168.0.104:3000/subuser/edit", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -81,6 +81,12 @@ const AddUserPopup = ({
       setEmail("");
       setPhone("");
       toggleModal();
+      seteditUserDetails({
+        usernameVal: "",
+        emailVal: "",
+        editUserId: "",
+        phoneVal: "",
+      });
       setsubUsersArray((prevUsers) => {
         const newUsers = prevUsers.map(user => {
           if(user._id === editUserId){
@@ -137,7 +143,7 @@ const AddUserPopup = ({
           <View style={{ flexDirection: "row", gap: 8 }}>
             <Pressable
               onPress={
-                editUserId && editUserId.length ? updateUser : addSubUser
+                (editUserId && editUserId.length) ? updateUser : addSubUser
               }
               style={{
                 paddingVertical: 8,
